@@ -3,8 +3,17 @@
 const express = require('express');
 const morgan = require('morgan');
 const stormpath = require('express-stormpath');
+const webpack = require('webpack');
+const config = require('./webpack.config');
 
 const app = express();
+
+const compiler = webpack(config);
+
+app.use(require('webpack-dev-middleware')(compiler), {
+  noInfo: true,
+  publicPath: config.output.publicPath,
+});
 
 app.use(morgan('dev'));
 app.use(stormpath.init(app, {
