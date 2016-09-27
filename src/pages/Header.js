@@ -26,6 +26,11 @@ const Header = function Header() {
                 <Link to="/register">Create Account</Link>
               </li>
             </NotAuthenticated>
+            <Authenticated>
+              <li>
+                <LogoutLink />
+              </li>
+            </Authenticated>
           </ul>
         </div>
       </div>
