@@ -14,12 +14,14 @@ import ProfilePage from './pages/ProfilePage';
 ReactStormpath.init();
 ReactDOM.render((
   <Router history={browserHistory}>
-    <Route path="/" component={MasterPage}>
+    <HomeRoute path="/" component={MasterPage}>
       <IndexRoute component={IndexPage} />
       <LoginRoute path="/login" component={LoginPage} />
       <Route path="/register" component={RegistrationPage} />
-      <AuthenticatedRoute path="/profile" component={ProfilePage} />
-    </Route>
+      <AuthenticatedRoute >
+        <HomeRoute path="/profile" component={ProfilePage} />
+      </AuthenticatedRoute>
+    </HomeRoute>
   </Router>
 ),
   document.getElementById('app-container')
