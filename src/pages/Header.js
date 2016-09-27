@@ -9,6 +9,11 @@ const Header = function Header() {
         <div id="navbar-collapse" className="collapse navbar-collapse">
           <ul className="nav navbar-nav">
             <li><Link to="/">Home</Link></li>
+            <Authenticated>
+              <li>
+                <Link to="/profile">Profile</Link>
+              </li>
+            </Authenticated>
           </ul>
           <ul className="nav navbar-nav navbar-right">
             <NotAuthenticated>

@@ -9,14 +9,16 @@ import MasterPage from './pages/MasterPage';
 import IndexPage from './pages/IndexPage';
 import LoginPage from './pages/LoginPage';
 import RegistrationPage from './pages/RegistrationPage';
+import ProfilePage from './pages/ProfilePage';
 
 ReactStormpath.init();
 ReactDOM.render((
   <Router history={browserHistory}>
     <Route path="/" component={MasterPage}>
+      <IndexRoute component={IndexPage} />
       <LoginRoute path="/login" component={LoginPage} />
       <Route path="/register" component={RegistrationPage} />
-      <IndexRoute component={IndexPage} />
+      <AuthenticatedRoute path="/profile" component={ProfilePage} />
     </Route>
   </Router>
 ),

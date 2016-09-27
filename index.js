@@ -1,4 +1,5 @@
 /* eslint-disable no-console */
+/* eslint-disable no-param-reassign */
 
 const express = require('express');
 const morgan = require('morgan');
@@ -6,6 +7,7 @@ const stormpath = require('express-stormpath');
 const webpack = require('webpack');
 const webpackMiddleware = require('webpack-dev-middleware');
 const path = require('path');
+const bodyParser = require('body-parser');
 
 const config = require('./webpack.config');
 
@@ -24,6 +26,50 @@ app.use(stormpath.init(app, {
     produces: ['application/json'],
   },
 }));
+
+app.post('/me', bodyParser.json(), stormpath.loginRequired, (req, res) => {
+  function writeError(message) {
+    res.status(400);
+    res.json({
+      message,
+      status: 400,
+    });
+    res.end();
+  }
+
+  function saveAccount() {
+    req.user.givenName = req.body.givenName;
+    req.user.surname = req.body.surname;
+    req.user.email = req.body.email;
+
+    req.user.save((err) => {
+      if (err) {
+        writeError(err.userMessage || err.message);
+        return;
+      }
+      res.end();
+    });
+  }
+
+  if (req.body.password) {
+    const application = req.app.get('stormpathApplication');
+
+    application.authenticateAccount({
+      username: req.user.username,
+      password: req.body.existingPassword,
+    }, (err) => {
+      if (err) {
+        writeError('The existing password that you entered was incorrect.');
+        return;
+      }
+
+      req.user.password = req.body.password;
+      saveAccount();
+    });
+  } else {
+    saveAccount();
+  }
+});
 
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'build/index.html'));
