@@ -10,7 +10,13 @@ const Header = function Header() {
           <ul className="nav navbar-nav">
             <li><Link to="/">Home</Link></li>
           </ul>
-          <ul className="nav navbar-nav navbar-right" />
+          <ul className="nav navbar-nav navbar-right">
+            <NotAuthenticated>
+              <li>
+                <LoginLink />
+              </li>
+            </NotAuthenticated>
+          </ul>
         </div>
       </div>
     </nav>
